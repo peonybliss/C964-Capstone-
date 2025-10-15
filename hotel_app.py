@@ -2,37 +2,22 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from google.colab import auth
-from google.colab import drive
-from google.auth import default
-import gspread
-from gspread_dataframe import set_with_dataframe
 
-# Authenticate and connect to Google Drive
-def authenticate_gdrive():
-    try:
-        auth.authenticate_user()
-        drive.mount('/content/drive')
-        return True
-    except:
-        st.warning("Running outside Colab - using sample data")
-        return False
-
-# Load data from Google Drive
+# Load data from Google Drive link
 @st.cache_data
 def load_data():
-    if authenticate_gdrive():
-        try:
-            
-            df = pd.read_csv('/content/drive/MyDrive/Capstone/Hotel_Features_Dataset.csv')
-            st.success(f"✅ Loaded {len(df)} hotels from Google Drive")
-            return df
-        except:
-            st.error("❌ Could not load from Google Drive")
-    
-    # Fallback: Create sample data
-    st.info("📊 Using sample data for demonstration")
-    return create_sample_data()
+    try:
+        
+        gdrive_link = "https://drive.google.com/uc?id=1jaJ2LqTmR7Xu7yNWAIa9uuUyR6DkQllC&export=download"
+        
+        df = pd.read_csv(gdrive_link)
+        st.success(f"Loaded {len(df)} hotels from Google Drive")
+        return df
+        
+    except Exception as e:
+        st.warning("Could not load from Google Drive. Using sample data.")
+        st.error(f"Error: {e}")
+        return create_sample_data()
 
 def create_sample_data():
     """Create sample hotel data if Google Drive fails"""
@@ -54,6 +39,10 @@ def create_sample_data():
 
 # Load the data
 df = load_data()
+
+# Rest of your app code continues here...
+st.title("Hotel Recommendation Roulette")
+# ... your existing app code
 
 
 
