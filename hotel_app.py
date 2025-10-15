@@ -1,3 +1,65 @@
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+from google.colab import auth
+from google.colab import drive
+from google.auth import default
+import gspread
+from gspread_dataframe import set_with_dataframe
+
+# Authenticate and connect to Google Drive
+def authenticate_gdrive():
+    try:
+        auth.authenticate_user()
+        drive.mount('/content/drive')
+        return True
+    except:
+        st.warning("Running outside Colab - using sample data")
+        return False
+
+# Load data from Google Drive
+@st.cache_data
+def load_data():
+    if authenticate_gdrive():
+        try:
+            
+            df = pd.read_csv('/content/drive/MyDrive/your-folder/Hotel_Features_Dataset.csv')
+            st.success(f"✅ Loaded {len(df)} hotels from Google Drive")
+            return df
+        except:
+            st.error("❌ Could not load from Google Drive")
+    
+    # Fallback: Create sample data
+    st.info("📊 Using sample data for demonstration")
+    return create_sample_data()
+
+def create_sample_data():
+    """Create sample hotel data if Google Drive fails"""
+    np.random.seed(42)
+    n_hotels = 1000
+    
+    data = {
+        'name': [f'Hotel {i}' for i in range(n_hotels)],
+        'price': np.random.uniform(50, 500, n_hotels),
+        'rating': np.random.uniform(1, 5, n_hotels),
+        'total_reviews': np.random.randint(10, 5000, n_hotels),
+        'has_pool': np.random.choice([0, 1], n_hotels, p=[0.3, 0.7]),
+        'has_gym': np.random.choice([0, 1], n_hotels, p=[0.4, 0.6]),
+        'has_wifi': np.random.choice([0, 1], n_hotels, p=[0.1, 0.9]),
+        'has_breakfast': np.random.choice([0, 1], n_hotels, p=[0.5, 0.5]),
+    }
+    
+    return pd.DataFrame(data)
+
+# Load the data
+df = load_data()
+
+
+
+
+
+
 #!/usr/bin/env python
 # coding: utf-8
 
