@@ -24,7 +24,7 @@ def load_data():
     if authenticate_gdrive():
         try:
             
-            df = pd.read_csv('/content/drive/MyDrive/your-folder/Hotel_Features_Dataset.csv')
+            df = pd.read_csv('/content/drive/MyDrive/Capstone/Hotel_Features_Dataset.csv')
             st.success(f"✅ Loaded {len(df)} hotels from Google Drive")
             return df
         except:
