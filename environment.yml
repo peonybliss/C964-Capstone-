@@ -13,5 +13,8 @@ dependencies:
   - numpy
   - streamlit
   - pip
-  - pip:
-    - -e .
+  - pip: 
+    - google-colab
+    - gspread
+    - gspread-dataframe
+    - google-auth
