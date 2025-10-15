@@ -1,0 +1,17 @@
+name: hotel-recommendation
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - jupyter
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - plotly
+  - numpy
+  - streamlit
+  - pip
+  - pip:
+    - -e .
